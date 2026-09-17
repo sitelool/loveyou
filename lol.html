@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>💗</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: #ffd6e5;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #btn {
+    padding: 20px 50px;
+    font-size: 22px;
+    color: #fff;
+    background: #ff7aa8;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(255, 122, 168, 0.5);
+    transition: transform 0.15s, box-shadow 0.15s;
+    z-index: 10;
+  }
+  #btn:hover { transform: scale(1.05); }
+  #btn:active { transform: scale(0.95); }
+
+  .popup {
+    position: fixed;
+    font-size: 22px;
+    font-weight: 600;
+    color: #d6336c;
+    background: #fff0f5;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(214, 51, 108, 0.25);
+    pointer-events: none;
+    animation: pop 2.5s ease forwards;
+    white-space: nowrap;
+    z-index: 5;
+  }
+
+  @keyframes pop {
+    0%   { opacity: 0; transform: translateY(20px) scale(0.7); }
+    20%  { opacity: 1; transform: translateY(0)    scale(1.1); }
+    35%  { transform: scale(1); }
+    80%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-40px) scale(0.9); }
+  }
+
+  .heart {
+    position: fixed;
+    font-size: 24px;
+    pointer-events: none;
+    animation: fly 2s ease-out forwards;
+    z-index: 4;
+  }
+
+  @keyframes fly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.6) rotate(var(--rot)); }
+  }
+</style>
+</head>
+<body>
+
+<button id="btn">Нажми меня</button>
+
+<script>
+  const phrases = [
+    "Ты просто умница!",
+    "Что бы я делал без тебя!",
+    "Ты просто чудо!",
+    "Лучик солнца!",
+    "Моя Милая!",
+    "Самая самая!",
+    "Моя радость!",
+    "Самая умная!",
+    "Самая прелестная!",
+    "Самая лучшая",
+    "Я люблю тебя!",
+    "Мой смысл жизни!",
+    "Любимая!",
+    "Дорогая!",
+  ];
+
+  const btn = document.getElementById("btn");
+
+  btn.addEventListener("click", (e) => {
+    const x = Math.random() * (window.innerWidth - 250);
+    const y = Math.random() * (window.innerHeight - 80);
+
+    const popup = document.createElement("div");
+    popup.className = "popup";
+    popup.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    popup.style.left = x + "px";
+    popup.style.top  = y + "px";
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 2500);
+
+    // сердечки летят от кнопки в случайные стороны
+    const rect = btn.getBoundingClientRect();
+    const startX = rect.left + rect.width / 2;
+    const startY = rect.top  + rect.height / 2;
+
+    for (let i = 0; i < 6; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💖";
+      heart.style.left = startX + "px";
+      heart.style.top  = startY + "px";
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 100 + Math.random() * 150;
+      heart.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      heart.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+      heart.style.setProperty("--rot", (Math.random() * 90 - 45) + "deg");
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }
+  });
+</script>
+
+</body>
+</html>
